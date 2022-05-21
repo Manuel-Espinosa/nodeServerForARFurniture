@@ -25,6 +25,19 @@ const createProduct = async (req, res, next) => {
 };
 
 
-const getProducts = async (res, req, next) => {};
+const getProducts = async (res, req, next) => {
+  let product;
+  try {
+    await client.connect();
+    const db =client.db('furnituredb');
+    product  = await db.collection('products').find().toArray();
+    
+  } catch (error) {
+    return res.json({messege: 'failed!'})
+  }
+
+  client.close();
+  res.json(product);
+};
 
 export { createProduct, getProducts };
